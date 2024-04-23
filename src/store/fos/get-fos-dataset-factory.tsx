@@ -8,9 +8,9 @@ import {
     defaultVectoreFeatureStyleFactory,
     getVectorFeaturesFilterer,
     VectorFeatureDescriptor,
-    VECTOR_VIZ_TYPE
+    VECTOR_VIZ_TYPE,
+    getPlottyColorScales
 } from '@oidajs/eo-mobx';
-import { getPlottyColorScales } from '@oidajs/eo-geotiff';
 import { AdamOpenSearchClient, getAdamVectorDownloadConfig } from '@oidajs/eo-adapters-adam';
 
 import { FeaturedDatasetConfig } from '../discovery';

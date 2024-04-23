@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button, Checkbox, Descriptions, Empty, Popover, Spin, Tabs, Typography, App } from 'antd';
+import { Button, Checkbox, Descriptions, Empty, Popover, Spin, Tabs, Typography, App, Space, Divider } from 'antd';
 import { PlusOutlined, AimOutlined, InfoCircleOutlined, LeftOutlined, CloseCircleOutlined } from '@ant-design/icons';
 
 import { AoiAction, DATE_RANGE_FIELD_ID, getAoiFieldFactory, isAbsoluteUrl, LoadingState } from '@oidajs/core';
@@ -130,6 +130,33 @@ export const AdamOpensearchDatasetDiscoveryResults = (props: AdamOpensearchDatas
                                     tooltips: [item.product.downloadLink, 'Copied to clipboard']
                                 }}
                             />
+                        )
+                    });
+                }
+                const subdatasetDownloadLinks = Object.entries(item.product.subDatasets)
+                    .filter(([_id, subdataset]) => {
+                        return !!subdataset.downloadLink;
+                    })
+                    .map(([id, subdataset]) => {
+                        return {
+                            name: id,
+                            link: subdataset.downloadLink
+                        };
+                    });
+
+                if (subdatasetDownloadLinks.length) {
+                    metadata.push({
+                        label: 'Download Links',
+                        value: (
+                            <Space split={<Divider type='vertical' />}>
+                                {subdatasetDownloadLinks.map((item) => {
+                                    return (
+                                        <a href={item.link} target='_blank' key={item.name}>
+                                            {item.name}
+                                        </a>
+                                    );
+                                })}
+                            </Space>
                         )
                     });
                 }
