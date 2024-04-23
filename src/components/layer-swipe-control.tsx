@@ -1,4 +1,5 @@
 import React from 'react';
+import { Badge } from 'antd';
 
 import { MapLayerSwipeTool } from '@oidajs/ui-react-antd';
 import { useLayerSwipeInteractionFromModule, useSelector } from '@oidajs/ui-react-mobx';
@@ -11,11 +12,18 @@ export type LayerSwipeControlProps = {
 export const LayerSwipeControl = (props: LayerSwipeControlProps) => {
     const swipeProps = useLayerSwipeInteractionFromModule();
     const targetDatasetName = useSelector(() => {
-        const targetDataset = props.datasetExplorer.items.find((item) => item.mapViz?.mapLayer?.id === swipeProps?.targetLayerId);
-        return targetDataset?.mapViz?.name;
+        const sourceId = swipeProps?.sourceLayersIds ? swipeProps?.sourceLayersIds[0] : undefined;
+        const targetDataset = props.datasetExplorer.items.find((item) => item.mapViz?.mapLayer?.id === sourceId);
+        return (
+            <div className='layer-swipe-control-header'>
+                <Badge color={targetDataset?.dataset.config.color}></Badge>
+                <span className='layer-swipe-control-label'>{targetDataset?.mapViz?.name}</span>
+            </div>
+        );
     }, [swipeProps]);
+
     if (swipeProps) {
-        return <MapLayerSwipeTool targetName={targetDatasetName} sourceName='Other map layers' horizontalMargin={10} {...swipeProps} />;
+        return <MapLayerSwipeTool sourceName={targetDatasetName} referenceName='Other map layers' horizontalMargin={10} {...swipeProps} />;
     } else {
         return null;
     }
